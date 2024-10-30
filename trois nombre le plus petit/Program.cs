@@ -23,7 +23,7 @@ namespace trois_nombre_le_plus_petit
             nb3 = double.Parse(Console.ReadLine());
 
             //afficher le plus petit des trois nombres 
-            Console.WriteLine("Lle plus petit des trois est " + Math.Min(nb1, Math.Min(nb2, nb3)));
+            Console.WriteLine("le plus petit des trois est " + Math.Min(nb1, Math.Min(nb2, nb3)));
             Console.ReadLine();
 
         }
