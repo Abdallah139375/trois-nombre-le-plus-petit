@@ -1,0 +1,10 @@
+# Mini projet - Algorigramme 1 : saisir et stocker les 4 couleurs
+print("Couleur de l'anneau 1 :")
+couleur1 = input()
+print("Couleur de l'anneau 2 :")
+couleur2 = input()
+print("Couleur de l'anneau 3 :")
+couleur3 = input()
+print("Couleur de l'anneau 4 (tolérance) :")
+couleur4 = input()
+print("Couleurs enregistrées :", couleur1, couleur2, couleur3, couleur4)
