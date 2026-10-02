@@ -1,5 +1,6 @@
 # Génère les algorigrammes (images PNG) de chaque exercice du TP1
 import os
+import json
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
@@ -41,6 +42,7 @@ class Algo:
         self.fig = plt.figure()
         self.ax = self.fig.add_axes([0, 0, 1, 1])
         self.pts = []
+        self.prims = []
 
     def taille(self, texte, forme):
         lignes = texte.split("\n")
@@ -58,6 +60,7 @@ class Algo:
     def noeud(self, texte, x, y, forme="rect"):
         w, h = self.taille(texte, forme)
         n = Noeud(x, y, w, h)
+        self.prims.append({"t": "forme", "forme": forme, "x": x, "y": y, "w": w, "h": h, "texte": texte})
         ax = self.ax
         if forme == "test":
             ax.add_patch(Polygon([n.top, n.right, n.bot, n.left], closed=True,
@@ -80,6 +83,7 @@ class Algo:
 
     def ligne(self, pts, fleche=True):
         self.pts += pts
+        self.prims.append({"t": "ligne", "pts": [list(p) for p in pts], "fleche": fleche})
         xs, ys = zip(*pts)
         if fleche and len(pts) >= 2:
             self.ax.plot(xs[:-1], ys[:-1], "k", lw=1.2)
@@ -90,6 +94,7 @@ class Algo:
             self.ax.plot(xs, ys, "k", lw=1.2)
 
     def etiquette(self, texte, x, y):
+        self.prims.append({"t": "etiquette", "texte": texte, "x": x, "y": y})
         self.ax.text(x, y, texte, fontsize=9, color="#b00000", style="italic",
                      ha="left", va="center")
 
@@ -140,6 +145,8 @@ class Algo:
         self.ax.set_aspect("equal")
         self.ax.axis("off")
         self.fig.set_size_inches((x1 - x0) * UNIT, (y1 - y0) * UNIT)
+        with open(os.path.join(DOSSIER, nom + ".json"), "w", encoding="utf-8") as f:
+            json.dump({"bornes": [x0, x1, y0, y1], "prims": self.prims}, f, ensure_ascii=False)
         chemin = os.path.join(DOSSIER, nom + ".png")
         self.fig.savefig(chemin, dpi=200, facecolor="white")
         plt.close(self.fig)
